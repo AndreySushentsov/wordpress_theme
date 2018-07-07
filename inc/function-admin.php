@@ -19,18 +19,21 @@
  }
 
  function second_custom_settings(){
+    register_setting('second-settings-group','profile_photo');
     register_setting('second-settings-group','first_name');
     register_setting('second-settings-group','last_name');
+    register_setting('second-settings-group','vk_handler');
     register_setting('second-settings-group','twitter_handler');
     register_setting('second-settings-group','instagram_handler');
     register_setting('second-settings-group','youtube_handler');
     register_setting('second-settings-group','facebook_handler');
 
-    add_settings_section('second-sidebar-options','Настройки сайдбара','second_sidebar_options','andrey-second');
+    add_settings_section('second-sidebar-options','Настройки информации о пользователе','second_sidebar_options','andrey-second');
 
+    add_settings_field('sidebar-picture','Фото:','second_sidebar_photo','andrey-second','second-sidebar-options');
     add_settings_field('sidebar-name','Имя, Фамилия:','second_sidebar_name','andrey-second','second-sidebar-options');
-    add_settings_field('sidebar-twitter', 'Twitter', 'second_sidebar_twitter','andrey-second','second-sidebar-options');
-    add_settings_field('sidebar-vk', 'Twitter', 'second_sidebar_twitter','andrey-second','second-sidebar-options');
+    add_settings_field('sidebar-vk', 'vk', 'second_sidebar_vk','andrey-second','second-sidebar-options');
+    add_settings_field('sidebar-Twitter', 'Twitter', 'second_sidebar_twitter','andrey-second','second-sidebar-options');
     add_settings_field('sidebar-instagram', 'Instagram', 'second_sidebar_instagram','andrey-second','second-sidebar-options');
     add_settings_field('sidebar-youtube', 'Youtube', 'second_sidebar_youtube','andrey-second','second-sidebar-options');
     add_settings_field('sidebar-fb', 'Facebook', 'second_sidebar_facebook','andrey-second','second-sidebar-options');
@@ -42,6 +45,12 @@
 
  }
 
+/* Настройки Фото профиля */
+ function second_sidebar_photo(){
+   $picure = esc_attr(get_option('profile_photo'));
+   echo "<input type='button' value='Изображение профиля' id='upload_picure_button' class='button button-secondary'/><input type='hidden' id='profile_picture' name='profile_photo' value='. $picure .'/>";
+ }
+
 /* Настройки Имя, Фамилия */
  function second_sidebar_name(){
    $firstName = esc_attr(get_option('first_name'));
@@ -50,6 +59,11 @@
  }
 
  /* Настройки социальных сетей*/
+ function second_sidebar_vk(){
+   $vk = esc_attr(get_option('vk_handler'));
+   echo "<input type='text' name='vk_handler' value='". $vk ."' placeholder='vk аккаунт' />";
+ }
+
   function second_sidebar_twitter(){
     $twitter = esc_attr(get_option('twitter_handler'));
     echo "<input type='text' name='twitter_handler' value='". $twitter ."' placeholder='Твиттер аккаунт' />";
