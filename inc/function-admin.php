@@ -13,12 +13,15 @@
    // Созадем подстраницы
    add_submenu_page('andrey-second', 'Настройки темы', 'Общие Настройки', 'manage_options', 'andrey-second','second_theme_create_page');
    add_submenu_page('andrey-second', 'Настройки Стилей', 'Настройки Стилей', 'manage_options', 'andrey-second-css','second_theme_settings_page');
+   add_submenu_page('andrey-second', 'Опции', 'Опции темы', 'manage_options', 'andrey-theme-support','second_theme_support_page');
 
    // Активируем настройки
    add_action('admin_init', 'second_custom_settings');
  }
 
  function second_custom_settings(){
+
+   //
     register_setting('second-settings-group','profile_photo');
     register_setting('second-settings-group','first_name');
     register_setting('second-settings-group','last_name');
@@ -38,6 +41,10 @@
     add_settings_field('sidebar-youtube', 'Youtube', 'second_sidebar_youtube','andrey-second','second-sidebar-options');
     add_settings_field('sidebar-fb', 'Facebook', 'second_sidebar_facebook','andrey-second','second-sidebar-options');
 
+    // theme options
+    register_setting('second-theme-support', 'post_formats', 'second_post_formats_callback');
+    add_settings_section('second-theme-options', 'Опции темы', 'second_theme_options','andrey-theme-support');
+    add_settings_field('post-formats', 'Post Formats', 'second_post_formats', 'andrey-theme-support', 'second-theme-options');
  }
 
 
@@ -84,10 +91,39 @@
     echo "<input type='text' name='facebook_handler' value='". $facebook ."' placeholder='аккаунт в facebook' />";
   }
 
+/*
+ * ======================
+ *  Options submenu
+ * ======================
+ */
 
-/* Подключение шаблона */
+/* post formats */
+function second_post_formats_callback($input){
+  return $input;
+}
+
+function second_theme_options(){
+  echo "hello";
+}
+
+function second_post_formats()
+{
+  $formats = array('aside', 'gallery', 'link', 'image', 'qoute', 'status', 'video', 'audio', 'chat');
+  $output ='';
+  foreach($formats as $format){
+    // $output .= '<input type="checkbox" id="'.$format.'" name="'.$format.'" value="1">'.$format.'<br>';
+    $output .= "<input type='checkbox' id='".$format."' name='".$format."' value='1'/> ".$format."<br>";
+  }
+  return $output;
+}
+
+/* Подключение шаблонов */
  function second_theme_create_page(){
    require_once(get_template_directory() . '/inc/templates/second-admin.php');
+ }
+
+ function second_theme_support_page(){
+   require_once(get_template_directory() . '/inc/templates/second-theme-support.php');
  }
 
  function second_theme_settings_page(){
