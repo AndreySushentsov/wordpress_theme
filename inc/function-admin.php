@@ -13,6 +13,7 @@
    // Созадем подстраницы
    add_submenu_page('andrey-second', 'Настройки темы', 'Общие Настройки', 'manage_options', 'andrey-second','second_theme_create_page');
    add_submenu_page('andrey-second', 'Настройки Стилей', 'Настройки Стилей', 'manage_options', 'andrey-second-css','second_theme_settings_page');
+   add_submenu_page('andrey-second', 'Настройки Формы обратной связи', 'Настройки Формы обратной связи', 'manage_options', 'andrey-theme-contact','second_theme_contact_page');
    add_submenu_page('andrey-second', 'Опции', 'Опции темы', 'manage_options', 'andrey-theme-support','second_theme_support_page');
 
    // Активируем настройки
@@ -42,9 +43,21 @@
     add_settings_field('sidebar-fb', 'Facebook', 'second_sidebar_facebook','andrey-second','second-sidebar-options');
 
     // theme options
-    register_setting('second-theme-support', 'post_formats', 'second_post_formats_callback');
+    register_setting('second-theme-support', 'post_formats');
+    register_setting('second-theme-support', 'custom_header');
+    register_setting('second-theme-support', 'custom_background');
+
     add_settings_section('second-theme-options', 'Опции темы', 'second_theme_options','andrey-theme-support');
+
     add_settings_field('post-formats', 'Post Formats', 'second_post_formats', 'andrey-theme-support', 'second-theme-options');
+    add_settings_field('custom-header', 'Опции Хедера', 'second_custom_header', 'andrey-theme-support', 'second-theme-options');
+    add_settings_field('custom-background', 'Опции бэкграунда', 'second_custom_background', 'andrey-theme-support', 'second-theme-options');
+
+    // Contact Form settings
+    register_setting('second-contact-options', 'activate_contact');
+
+    add_settings_section('second-contact-section', 'Форма Обратной Связи', 'second_contact_section', 'andrey-theme-contact');
+    add_settings_field('activate-form', 'Активируем форму обратной связи', 'second_activate_contact', 'andrey-theme-contact','second-contact-section');
  }
 
 
@@ -98,9 +111,6 @@
  */
 
 /* post formats */
-function second_post_formats_callback($input){
-  return $input;
-}
 
 function second_theme_options(){
   echo "hello";
@@ -109,13 +119,40 @@ function second_theme_options(){
 function second_post_formats()
 {
   $formats = array('aside', 'gallery', 'link', 'image', 'qoute', 'status', 'video', 'audio', 'chat');
+  $options = get_option('post_formats');
   $output ='';
   foreach($formats as $format){
-    // $output .= '<input type="checkbox" id="'.$format.'" name="'.$format.'" value="1">'.$format.'<br>';
-    $output .= "<input type='checkbox' id='".$format."' name='".$format."' value='1'/> ".$format."<br>";
+    $checked = (@$options[$format] == 1 ? 'checked' : '');
+    $output .= "<input type='checkbox' id='".$format."' name='post_formats[".$format."]' value='1' ".$checked."/> ".$format."<br>";
   }
-  return $output;
+  echo $output;
 }
+
+function second_custom_header()
+{
+  $options = get_option('custom_header');
+  $checked = (@$options == 1 ? 'checked' : '');
+  echo "<input type='checkbox' id='custom_header' name='custom_header' value='1' ".$checked."/> Активировать Хедер";
+}
+
+function second_custom_background()
+{
+  $options = get_option('custom_background');
+  $checked = (@$options == 1 ? 'checked' : '');
+  echo "<input type='checkbox' id='custom_background' name='custom_background' value='1' ".$checked."/> Активировать Бэкграунд";
+}
+
+// Форма обратной связи
+ function second_contact_section(){
+   echo "настройки формы обратной связи";
+ }
+
+ function second_activate_contact(){
+   $options = get_option('activate_contact');
+   $checked = (@$options == 1 ? 'checked' : '');
+   echo "<input type='checkbox' id='activate_contact' name='activate_contact' value='1' ".$checked."/>";
+ }
+
 
 /* Подключение шаблонов */
  function second_theme_create_page(){
@@ -124,6 +161,11 @@ function second_post_formats()
 
  function second_theme_support_page(){
    require_once(get_template_directory() . '/inc/templates/second-theme-support.php');
+ }
+
+ function second_theme_contact_page()
+ {
+   require_once(get_template_directory() . '/inc/templates/second-theme-contact.php');
  }
 
  function second_theme_settings_page(){
