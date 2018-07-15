@@ -14,7 +14,8 @@
     <?php if(is_singular() && pings_open(get_queried_object())): ?>
       <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
     <?php endif; ?>
-    <title><?php bloginfo('name'); ?></title>
+    <title><?php bloginfo('name'); wp_title(); ?></title>
+    <meta name="description" content="<?php bloginfo('description'); ?>">
     <?php wp_head(); ?>
   </head>
   <body <?php body_class(); ?>>
