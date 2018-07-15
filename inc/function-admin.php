@@ -58,6 +58,13 @@
 
     add_settings_section('second-contact-section', 'Форма Обратной Связи', 'second_contact_section', 'andrey-theme-contact');
     add_settings_field('activate-form', 'Активируем форму обратной связи', 'second_activate_contact', 'andrey-theme-contact','second-contact-section');
+
+    //Custom CSS options
+    register_setting('second-custom-css', 'second_css', 'second_sanitize_custom_css');
+
+    add_settings_section('second-custom-css-section', 'Настройки CSS', 'second_custom_css_section_callback','andrey-second-css' );
+    add_settings_field('custom-css', 'Добавте свои стили: ', 'second_custom_css_callback', 'andrey-second-css', 'second-custom-css-section');
+
  }
 
 
@@ -154,6 +161,23 @@ function second_custom_background()
  }
 
 
+// Настройки стилей
+function second_custom_css_section_callback(){
+  echo "<p> Пользовательские настройки стилей. </p>";
+}
+
+function second_sanitize_custom_css($input)
+{
+  $output = esc_textarea($input);
+  return $output;
+}
+
+function second_custom_css_callback(){
+  $css = get_option('second_css');
+  $css = (empty($css) ? '/* Second Theme Custom CSS */' : $css);
+  echo "<textarea rows='10' style='width:500px;' id='second_css' name='second_css'>".$css."</textarea>";
+}
+
 /* Подключение шаблонов */
  function second_theme_create_page(){
    require_once(get_template_directory() . '/inc/templates/second-admin.php');
@@ -169,7 +193,7 @@ function second_custom_background()
  }
 
  function second_theme_settings_page(){
-
+   require_once(get_template_directory() . '/inc/templates/second-custom-css.php');
  }
 
  add_action('admin_menu', 'secondtheme_add_admin_page');

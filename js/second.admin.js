@@ -21,4 +21,13 @@ jQuery(document).ready(function() {
 
     mediaUploader.open();
   });
+
+
+  var updateCss = function () {
+    $('#second_css').val();
+  };
+
+  $('#custom_css_form').on('submit', function() {
+    updateCss;
+  });
 });

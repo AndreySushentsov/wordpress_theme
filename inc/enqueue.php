@@ -17,3 +17,14 @@
    wp_enqueue_script('second-admin-script');
  }
  add_action('admin_enqueue_scripts', 'second_load_admin_scripts');
+
+ /*
+  * ========================
+  *  FRONT-END ENQUEUE
+  * ========================
+  */
+  function second_load_scripts(){
+    wp_enqueue_style('style', get_template_directory_uri() . '/css/style.css', array(), '1.0.0', 'all');
+    wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), true);
+  }
+  add_action('wp_enqueue_scripts','second_load_scripts');
