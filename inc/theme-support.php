@@ -27,3 +27,10 @@
   if(@$background == 1){
     add_theme_support('custom-background');
   }
+
+/* Активация Меню */
+  function second_register_nav_menu(){
+    register_nav_menu('primary', 'Навигаиця в хедере');
+  }
+  
+  add_action('after_setup_theme', 'second_register_nav_menu');

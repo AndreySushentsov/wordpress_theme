@@ -19,8 +19,14 @@
     <?php wp_head(); ?>
   </head>
   <body <?php body_class(); ?>>
-    <div class="container">
+    <header class="container">
       <div class="header__container background-img" style="background-image:url(<?php header_image(); ?>);">
-
+        <nav>
+          <?php wp_nav_menu(array(
+            'theme_location' => 'primary',
+            'container' => false,
+            'menu_class' => 'header__navigation'
+          )); ?>
+        </nav>
       </div>
-    </div>
+    </header>
