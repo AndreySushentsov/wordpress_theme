@@ -25,7 +25,8 @@
           <?php wp_nav_menu(array(
             'theme_location' => 'primary',
             'container' => false,
-            'menu_class' => 'header__navigation'
+            'menu_class' => 'header__navigation',
+            'walker' => new Second_Walker_Nav_Menu()
           )); ?>
         </nav>
       </div>
